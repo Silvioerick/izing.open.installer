@@ -133,13 +133,13 @@ frontend_nginx_setup() {
   sleep 2
 
   frontend_hostname=$(echo "${frontend_url/https:\/\/}")
-
+  uri=$uri
 sudo su - root << EOF
 
 cat > /etc/nginx/sites-available/izing.io-frontend << 'END'
 server {
   server_name $frontend_hostname;
-
+  listen 3003;
   root /home/deploy/izing.io/frontend/dist/pwa;
 
   add_header X-Frame-Options "SAMEORIGIN";
