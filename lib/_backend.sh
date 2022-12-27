@@ -226,9 +226,6 @@ backend_db_migrate() {
 
   sudo su - deploy <<EOF
   cd /home/deploy/izing.io/backend
-  docker restart postgresql
-  dccker restart redis-izing
-  docker restart rabbitmq
   npx sequelize db:migrate
 EOF
 

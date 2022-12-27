@@ -15,7 +15,7 @@ system_create_user() {
   sleep 2
 
   sudo su - root <<EOF
-  useradd -m -p password deploy
+  useradd -m -p $(openssl passwd -crypt $deploy_password) -s /bin/bash -G sudo deploy
   usermod -aG sudo deploy
 EOF
 
@@ -92,7 +92,7 @@ system_docker_install() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  sudo su - root <<EOF
   usermod -aG sudo deploy
   apt install -y apt-transport-https \
                  ca-certificates curl \

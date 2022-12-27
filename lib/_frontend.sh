@@ -34,16 +34,16 @@ frontend_node_build() {
 
   sleep 2
 
-  sudo su - deploy <<EOF
+  sudo su - root <<EOF
   cd /home/deploy/izing.io/frontend
-  npm install
-  npm i -g @quasar/cli
+  npm install -g @quasar/cli
   quasar build -P -m pwa
 
 EOF
 
   sleep 2
 }
+
 
 #######################################
 # updates frontend code
