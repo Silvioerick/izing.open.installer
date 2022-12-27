@@ -15,7 +15,7 @@ system_create_user() {
   sleep 2
 
   sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -crypt $deploy_password) -s /bin/bash -G sudo deploy
+  useradd -m -p password deploy
   usermod -aG sudo deploy
 EOF
 
@@ -92,7 +92,8 @@ system_docker_install() {
 
   sleep 2
 
-  sudo su - root <<EOF
+  sudo su - deploy <<EOF
+  usermod -aG sudo deploy
   apt install -y apt-transport-https \
                  ca-certificates curl \
                  software-properties-common
@@ -102,6 +103,8 @@ system_docker_install() {
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 
   apt install -y docker-ce
+  usermod -aG docker ${USER}
+
 EOF
 
   sleep 2

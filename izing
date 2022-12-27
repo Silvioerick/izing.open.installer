@@ -36,6 +36,9 @@ source "${PROJECT_ROOT}"/config
 # interactive CLI
 inquiry_options
 
+# system config
+system_create_user
+
 # dependencies related
 system_update
 system_node_install
@@ -45,9 +48,6 @@ system_puppeteer_dependencies
 system_snapd_install
 system_nginx_install
 system_certbot_install
-
-# system config
-system_create_user
 
 # backend related
 system_git_clone
@@ -66,7 +66,6 @@ backend_nginx_setup
 frontend_set_env
 frontend_node_dependencies
 frontend_node_build
-frontend_start_pm2
 frontend_nginx_setup
 
 # network related
