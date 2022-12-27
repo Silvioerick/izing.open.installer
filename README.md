@@ -28,3 +28,20 @@ cd ./izing.io.installer-master
 ```bash
 sudo ./izing
 ```
+
+### manual modifications
+
+Nginx configuration
+
+/etc/nginx/sites-available/izing.io-frontend
+
+line 13 include:
+
+    try_files  $uri $uri/ /index.html;
+
+### Comments
+
+redis and postgresql password: password
+Rabbitmq password: guest / guest
+User: Deploy Password: password
+
