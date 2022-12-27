@@ -27,9 +27,9 @@ EOF
 # Arguments:
 #   None
 #######################################
-frontend_node_build() {
+frontend_node_quasar() {
   print_banner
-  printf "${WHITE} 💻 Compilando o código do frontend...${GRAY_LIGHT}"
+  printf "${WHITE} 💻 Instalando Quasar...${GRAY_LIGHT}"
   printf "\n\n"
 
   sleep 2
@@ -37,12 +37,34 @@ frontend_node_build() {
   sudo su - root <<EOF
   cd /home/deploy/izing.io/frontend
   npm install -g @quasar/cli
+
+EOF
+
+  sleep 2
+}
+
+
+#######################################
+# compiles frontend code
+# Arguments:
+#   None
+#######################################
+frontend_node_build() {
+  print_banner
+  printf "${WHITE} 💻 Compilando o código do frontend...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - deploy <<EOF
+  cd /home/deploy/izing.io/frontend
   quasar build -P -m pwa
 
 EOF
 
   sleep 2
 }
+
 
 
 #######################################
@@ -118,7 +140,7 @@ cat > /etc/nginx/sites-available/izing.io-frontend << 'END'
 server {
   server_name $frontend_hostname;
 
-  root /home/deploy/izing.io/frontend/dist/pwa
+  root /home/deploy/izing.io/frontend/dist/pwa;
 
   add_header X-Frame-Options "SAMEORIGIN";
   add_header X-XSS-Protection "1; mode=block";

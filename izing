@@ -65,6 +65,7 @@ backend_nginx_setup
 # frontend related
 frontend_set_env
 frontend_node_dependencies
+frontend_node_quasar
 frontend_node_build
 frontend_nginx_setup
 
