@@ -60,13 +60,11 @@ backend_rabbitmq_create() {
 
   sudo su - root <<EOF
   usermod -aG docker deploy
-  docker run --name rabbitmq \
-                -p 5672:5672 \
-                -p 15672:15672 \
-                --restart=always \
-                --hostname rabbitmq \
+  docker run -d --name rabbitmq \
+                -p 5672:5672 -p 15672:15672 \
+                --restart=always --hostname rabbitmq \
                 -v /data:/var/lib/rabbitmq rabbitmq:3.11.5-management \
-
+  
 EOF
 
   sleep 2
