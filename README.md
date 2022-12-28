@@ -35,9 +35,19 @@ Nginx configuration
 
 /etc/nginx/sites-available/izing.io-frontend
 
+/etc/nginx/sites-available/izing.io-admin-frontend
+
 line 13 include:
 
     try_files  $uri $uri/ /index.html;
+
+### Ports Local
+API - 3000
+
+Front - 3003
+
+Admin - 3004
+
 
 ### Comments
 
