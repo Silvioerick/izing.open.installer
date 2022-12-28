@@ -69,6 +69,13 @@ frontend_node_quasar
 frontend_node_build
 frontend_nginx_setup
 
+# adminfrontend related
+admin-frontend_quasarconf_setup
+admin-frontend_node_dependencies
+admin-frontend_node_build
+admin-frontend_nginx_setup
+
+
 # network related
 system_nginx_conf
 system_nginx_restart

@@ -16,16 +16,27 @@ get_backend_url() {
   read -p "> " backend_url
 }
 
+get_admin_frontend_url() {
+
+  print_banner
+  printf "${WHITE} 💻 Digite o domínio da interface web Admin:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " admin_frontend_url
+}
+
+
 get_urls() {
   
   get_frontend_url
   get_backend_url
+  get_admin_frontend_url
 }
 
 software_update() {
   
   frontend_update
   backend_update
+  admin_frontend_update
 }
 
 inquiry_options() {
