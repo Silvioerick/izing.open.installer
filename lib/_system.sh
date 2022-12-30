@@ -321,14 +321,35 @@ system_certbot_setup() {
 
   backend_domain=$(echo "${backend_url/https:\/\/}")
   frontend_domain=$(echo "${frontend_url/https:\/\/}")
+  admin_frontend=$(echo "${admin_frontend_url/https:\/\/}")
 
   sudo su - root <<EOF
   certbot -m $deploy_email \
           --nginx \
           --agree-tos \
           --non-interactive \
-          --domains $backend_domain,$frontend_domain
+          --domains $backend_domain,$frontend_domain,$admin_frontend
 EOF
+
+  sleep 2
+}
+
+system_success() {
+  print_banner
+  printf "${GREEN} 💻 Instalação concluída com Sucesso...${NC}"
+  printf "${CYAN_LIGHT}";
+  printf "\n\n"
+  printf "Usuário: admin@izing.io"
+  printf "\n"
+  printf "Senha: 123456"
+  printf "\n\n"
+  printf "admin front-end: https://$admin_frontend\n"
+  printf "\n"
+  printf "front-end: https://$frontend_domain\n"
+  printf "\n"
+  printf "back-end: https://$backend_domain\n"
+  printf "\n\n"
+  printf "${NC}";
 
   sleep 2
 }

@@ -80,3 +80,6 @@ admin-frontend_nginx_setup
 system_nginx_conf
 system_nginx_restart
 system_certbot_setup
+
+# end install
+system_success
