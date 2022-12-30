@@ -93,6 +93,8 @@ backend_set_env() {
   frontend_url=${frontend_url%%/*}
   frontend_url=https://$frontend_url
 
+  admin_frontend=$(echo "${admin_frontend_url/https:\/\/}")
+
 sudo su - deploy << EOF
   cat <<[-]EOF > /home/deploy/izing.io/backend/.env
 NODE_ENV=dev
@@ -131,7 +133,7 @@ AMQP_URL='amqp://guest:guest@127.0.0.1:5672?connection_attempts=5&retry_delay=5'
 
 API_URL_360=https://waba-sandbox.360dialog.io
 
-ADMIN_DOMAIN=${backend_url}
+ADMIN_DOMAIN=${admin_frontend}
 
 FACEBOOK_APP_ID='seu ID'
 FACEBOOK_APP_SECRET_KEY='Sua Secret Key'
