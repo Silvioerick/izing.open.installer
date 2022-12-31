@@ -52,6 +52,7 @@ system_certbot_install
 # backend related
 system_git_clone
 backend_set_env
+backend_fix_login
 backend_postgres_create
 backend_redis_create
 backend_rabbitmq_create
@@ -80,3 +81,6 @@ admin-frontend_nginx_setup
 system_nginx_conf
 system_nginx_restart
 system_certbot_setup
+
+# end install
+system_success
