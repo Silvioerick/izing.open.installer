@@ -49,6 +49,18 @@ Front - 3003
 Admin - 3004
 
 
+### Instalação Ubuntu 22.04 
+
+editar o ARQUIVO  /etc/needrestart/needrestart.confarquivo, alterando a linha:
+
+#$nrconf{restart} = 'i';
+
+para
+
+$nrconf{restart} = 'a';
+
+
+
 ### Comments
 
 redis and postgresql password: password
