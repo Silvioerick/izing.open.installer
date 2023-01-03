@@ -19,7 +19,7 @@ backend_postgres_create() {
   docker run --name postgresql \
                 -e POSTGRES_USER=izing \
                 -e POSTGRES_PASSWORD=password \
-                -p 5432:5432 \
+                -p 5432:5432 --restart=always \
                 -v /data:/var/lib/postgresql/data \
                 -d postgres \
 
