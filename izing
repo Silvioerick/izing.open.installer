@@ -65,15 +65,19 @@ backend_nginx_setup
 
 # frontend related
 frontend_set_env
+frontend_serverjs_setup
 frontend_node_dependencies
 frontend_node_quasar
 frontend_node_build
+frontend_start_pm2
 frontend_nginx_setup
 
 # adminfrontend related
 admin-frontend_quasarconf_setup
+admin-frontend_serverjs_setup
 admin-frontend_node_dependencies
 admin-frontend_node_build
+admin-frontend_start_pm2
 admin-frontend_nginx_setup
 
 

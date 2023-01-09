@@ -2,6 +2,44 @@
 # 
 # functions for setting up app frontend
 
+
+#######################################
+# updates frontend code
+# Arguments:
+#   None
+#######################################
+frontend_serverjs_setup() {
+  print_banner
+  printf "${WHITE} 💻 Criando server.js (frontend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+
+sudo su - root << EOF
+
+cat > /home/deploy/izing.io/frontend/server.js << 'END'
+// simple express server to run frontend production build;
+const express = require('express')
+const path = require('path')
+const app = express()
+app.use(express.static(path.join(__dirname, 'dist/pwa')))
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'dist/pwa', 'index.html'))
+})
+app.listen(3333)
+
+
+END
+
+EOF
+
+  sleep 2
+}
+
+
+
+
 #######################################
 # installed node packages
 # Arguments:
@@ -120,6 +158,34 @@ EOF
   sleep 2
 }
 
+
+#######################################
+# starts frontend using pm2 in
+# production mode.
+# Arguments:
+#   None
+#######################################
+
+
+frontend_start_pm2() {
+  print_banner
+  printf "${WHITE} 💻 Iniciando pm2 (frontend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - deploy <<EOF
+  cd /home/deploy/izing.io/frontend
+  pm2 start server.js --name izing.io-frontend
+  pm2 save
+EOF
+
+  sleep 2
+}
+
+
+
+
 #######################################
 # sets up nginx for frontend
 # Arguments:
@@ -139,22 +205,20 @@ sudo su - root << EOF
 cat > /etc/nginx/sites-available/izing.io-frontend << 'END'
 server {
   server_name $frontend_hostname;
-  listen 3003;
-  root /home/deploy/izing.io/frontend/dist/pwa;
-
-  add_header X-Frame-Options "SAMEORIGIN";
-  add_header X-XSS-Protection "1; mode=block";
-  add_header X-Content-Type-Options "nosniff"; 
   
-  index index.html;
-  charset utf-8;
-  location / {
-    try_files $uri $uri/ /index.html;
+    location / {
+    proxy_pass http://127.0.0.1:3333;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_cache_bypass \$http_upgrade;
   }
-
-  access_log off;
-
 }
+
 
 END
 

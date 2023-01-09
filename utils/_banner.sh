@@ -28,6 +28,6 @@ print_banner() {
   printf "██ ██     ██ ██  ███ ██   █    ██ ██  ██  \n";
   printf "██ ██████ ██ ██   ██ ██████ ██ ██ ██████  \n";
   printf "${NC}";
-
+  printf "Version 2";
   printf "\n"
 }
