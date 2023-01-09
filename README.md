@@ -29,29 +29,19 @@ cd ./izing.io.installer-master
 sudo ./izing
 ```
 
-### manual modifications
-
-Nginx configuration
-
-/etc/nginx/sites-available/izing.io-frontend
-
-/etc/nginx/sites-available/izing.io-admin-frontend
-
-line 13 include:
-
-    try_files  $uri $uri/ /index.html;
-
 ### Ports Local
+Instalacao Local usar IP:PORTA
+
 API - 3000
 
-Front - 3003
+Front - 3333
 
-Admin - 3004
+Admin - 3334
 
 
 ### Instalação Ubuntu 22.04 
 
-editar o ARQUIVO  /etc/needrestart/needrestart.confarquivo, alterando a linha:
+editar o ARQUIVO  /etc/needrestart/needrestart.conf , alterando a linha:
 
 #$nrconf{restart} = 'i';
 
