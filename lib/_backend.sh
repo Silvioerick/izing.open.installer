@@ -3,6 +3,53 @@
 # functions for setting up app backend
 
 #######################################
+# Install Chromium Arm64
+# Arguments:
+#   None
+#######################################
+
+backend_chromium_arm64() {
+  print_banner
+  printf "${WRITE} 💻 Instalando Chromium ARM64...${GRAY_LIGHT}}"
+  printf "\n\n"
+
+  sleep 2
+  sudo su - root <<EOF
+  apt install chromium-browser
+
+EOF
+
+  sleep 2
+}
+
+
+
+#######################################
+# Install Chrome
+# Arguments:
+#   None
+#######################################
+
+backend_chrome() {
+  print_banner
+  printf "${WRITE} 💻 Instalando Chrome...${GRAY_LIGHT}}"
+  printf "\n\n"
+
+  sleep 2
+  sudo su - root <<EOF
+  sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+  wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  apt-get update
+  apt-get install google-chrome-stable
+
+EOF
+
+  sleep 2
+}
+
+
+
+#######################################
 # creates postgresql db, redis and rabbitmq  using docker
 # Arguments:
 #   None
@@ -118,7 +165,7 @@ IO_REDIS_PASSWORD='password'
 IO_REDIS_PORT='6379'
 IO_REDIS_DB_SESSION='2'
 
-#CHROME_BIN=/usr/bin/google-chrome-stable
+CHROME_BIN=/usr/bin/google-chrome-stable
 
 MIN_SLEEP_BUSINESS_HOURS=10000
 MAX_SLEEP_BUSINESS_HOURS=20000
@@ -143,6 +190,84 @@ EOF
 
   sleep 2
 }
+
+#######################################
+# sets environment variable for backend AMR64
+# Arguments:
+#   None
+#######################################
+
+
+backend_set_env_arm64() {
+  print_banner
+  printf "${WHITE} 💻 Configurando variáveis de ambiente (backend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  # ensure idempotency
+  backend_url=$(echo "${backend_url/https:\/\/}")
+  backend_url=${backend_url%%/*}
+  backend_url=https://$backend_url
+
+  # ensure idempotency
+  frontend_url=$(echo "${frontend_url/https:\/\/}")
+  frontend_url=${frontend_url%%/*}
+  frontend_url=https://$frontend_url
+
+  admin_frontend=$(echo "${admin_frontend_url/https:\/\/}")
+
+sudo su - deploy << EOF
+  cat <<[-]EOF > /home/deploy/izing.io/backend/.env
+NODE_ENV=dev
+BACKEND_URL=${backend_url}
+FRONTEND_URL=${frontend_url}
+PROXY_PORT=443
+PORT=3000
+
+DB_DIALECT=postgres
+DB_PORT=5432
+POSTGRES_HOST=localhost
+POSTGRES_USER=${db_user}
+POSTGRES_PASSWORD=${db_pass}
+POSTGRES_DB=${db_name}
+
+JWT_SECRET=DPHmNRZWZ4isLF9vXkMv1QabvpcA80Rc
+JWT_REFRESH_SECRET=EMPehEbrAdi7s8fGSeYzqGQbV5wrjH4i
+
+IO_REDIS_SERVER=localhost
+IO_REDIS_PASSWORD='password'
+IO_REDIS_PORT='6379'
+IO_REDIS_DB_SESSION='2'
+
+CHROME_BIN=/usr/bin/chromium
+
+MIN_SLEEP_BUSINESS_HOURS=10000
+MAX_SLEEP_BUSINESS_HOURS=20000
+
+MIN_SLEEP_AUTO_REPLY=4000
+MAX_SLEEP_AUTO_REPLY=6000
+
+MIN_SLEEP_INTERVAL=2000
+MAX_SLEEP_INTERVAL=5000
+
+AMQP_URL='amqp://guest:guest@127.0.0.1:5672?connection_attempts=5&retry_delay=5'
+
+API_URL_360=https://waba-sandbox.360dialog.io
+
+ADMIN_DOMAIN=${admin_frontend}
+
+FACEBOOK_APP_ID='seu ID'
+FACEBOOK_APP_SECRET_KEY='Sua Secret Key'
+
+[-]EOF
+EOF
+
+  sleep 2
+}
+
+
+
 
 #######################################
 # installs node.js dependencies

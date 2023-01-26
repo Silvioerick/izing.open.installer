@@ -43,16 +43,16 @@ system_create_user
 system_update
 system_node_install
 system_pm2_install
-system_docker_install
+system_docker_install_arm64
 system_puppeteer_dependencies
 system_snapd_install
 system_nginx_install
 system_certbot_install
 
 # backend related
-backend_chrome
+backend_chromium_arm64
 system_git_clone
-backend_set_env
+backend_set_env_arm64
 backend_fix_login
 backend_postgres_create
 backend_redis_create

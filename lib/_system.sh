@@ -110,6 +110,39 @@ EOF
   sleep 2
 }
 
+
+#######################################
+# installs docker
+# Arguments:
+#   None
+#######################################
+system_docker_install_arm64() {
+  print_banner
+  printf "${WHITE} 💻 Instalando docker...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - root <<EOF
+  usermod -aG sudo deploy
+  apt install -y apt-transport-https \
+                 ca-certificates curl \
+                 software-properties-common
+
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+  add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu bionic stable"
+
+  apt install -y docker-ce
+  usermod -aG docker ${USER}
+
+EOF
+
+  sleep 2
+}
+
+
+
 #######################################
 # Ask for file location containing
 # multiple URL for streaming.
