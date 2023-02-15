@@ -9,6 +9,8 @@ jwt_refresh_secret=EMPehEbrAdi7s8fGSeYzqGQbV5wrjH4i
 
 deploy_password=password
 
+redis_pass=password
+
 postgres_root_password=password
 
 db_pass=password

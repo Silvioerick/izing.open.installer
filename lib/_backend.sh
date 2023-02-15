@@ -64,8 +64,8 @@ backend_postgres_create() {
   sudo su - root <<EOF
   usermod -aG docker deploy
   docker run --name postgresql \
-                -e POSTGRES_USER=izing \
-                -e POSTGRES_PASSWORD=password \
+		-e POSTGRES_USER=$(db_user) \
+		-e POSTGRES_PASSWORD=$(db_pass) \
                 -p 5432:5432 --restart=always \
                 -v /data:/var/lib/postgresql/data \
                 -d postgres \
@@ -90,7 +90,7 @@ backend_redis_create() {
                 -p 6379:6379 \
                 -d --restart=always redis:latest redis-server \
                 --appendonly yes \
-                --requirepass password \
+                --requirepass ${redis_pass} \
 
 
 EOF
@@ -161,7 +161,7 @@ JWT_SECRET=DPHmNRZWZ4isLF9vXkMv1QabvpcA80Rc
 JWT_REFRESH_SECRET=EMPehEbrAdi7s8fGSeYzqGQbV5wrjH4i
 
 IO_REDIS_SERVER=localhost
-IO_REDIS_PASSWORD='password'
+IO_REDIS_PASSWORD='$(redis_pass)'
 IO_REDIS_PORT='6379'
 IO_REDIS_DB_SESSION='2'
 
