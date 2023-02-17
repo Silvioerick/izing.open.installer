@@ -7,15 +7,15 @@
 jwt_secret=DPHmNRZWZ4isLF9vXkMv1QabvpcA80Rc
 jwt_refresh_secret=EMPehEbrAdi7s8fGSeYzqGQbV5wrjH4i
 
-deploy_password=password
+#deploy_password=password
 
-redis_pass=password
+#redis_pass=password
 
-postgres_root_password=password
+#postgres_root_password=password
 
-db_pass=password
+#db_pass=password
 
-db_user=izing
-db_name=izing
+#db_user=izing
+#db_name=izing
 
 deploy_email=lumardyelson@gmail.com

@@ -15,7 +15,7 @@ system_create_user() {
   sleep 2
 
   sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -1 $deploy_password) -s /bin/bash -G sudo deploy
+  useradd -m -p $(openssl passwd -1 ${deploy_password}) -s /bin/bash -G sudo deploy
   usermod -aG sudo deploy
 EOF
 
@@ -329,7 +329,7 @@ system_nginx_conf() {
 
   sleep 2
 
-sudo su - root << EOF
+44sudo su - root << EOF
 
 cat > /etc/nginx/conf.d/whaticket.conf << 'END'
 client_max_body_size 20M;
@@ -382,6 +382,22 @@ system_success() {
   printf "\n"
   printf "back-end: https://$backend_domain\n"
   printf "\n\n"
+  printf "Acesso ao Portainer: https://seu ip:9443\n"
+  printf "\n\n"
+  printf "Senha Usuario Deploy: $deploy_password"
+  printf "\n"
+  printf "Usuario do Banco de Dados: $db_user"
+  printf "\n"
+  printf "Nome do Banco de Dados: $db_name"
+  printf "\n"
+  printf "Senha do Banco de Dados: $db_pass"
+  printf "\n"
+  printf "Senha do Redis: $redis_pass"
+  printf "\n"
+
+
+
+
   printf "${NC}";
 
   sleep 2

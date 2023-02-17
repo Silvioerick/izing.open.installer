@@ -118,6 +118,29 @@ EOF
 }
 
 
+backend_portainer_create() {
+  print_banner
+  printf "${WHITE} 💻 Criando Portainer...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - root <<EOF
+  usermod -aG docker deploy
+  docker run -d --name portainer \
+                -p 9000:9000 -p 9443:9443 \
+                --restart=always \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -v portainer_data:/data portainer/portainer-ce
+
+EOF
+
+  sleep 2
+}
+
+
+
+
 #######################################
 # sets environment variable for backend.
 # Arguments:

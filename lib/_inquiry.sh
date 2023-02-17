@@ -25,11 +25,64 @@ get_admin_frontend_url() {
 }
 
 
+
+get_deploy_pass() {
+
+  print_banner
+  printf "${WHITE} 💻 Digite uma senha para o Usuario Deploy:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " deploy_password
+}
+
+
+
+
+get_redis_pass() {
+
+  print_banner
+  printf "${WHITE} 💻 Digite uma senha para o Redis:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " redis_pass
+}
+
+
+get_db_name() {
+
+  print_banner
+  printf "${WHITE} 💻 Digite um nome para o Banco de Dados:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " db_name
+}
+
+
+get_db_user() {
+
+  print_banner
+  printf "${WHITE} 💻 Digite um usuario para o Banco de Dados:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " db_user
+}
+
+
+get_db_pass() {
+
+  print_banner
+  printf "${WHITE} 💻 Digite uma senha para o Banco de Dados:${GRAY_LIGHT}"
+  printf "\n\n"
+  read -p "> " db_pass
+}
+
+
 get_urls() {
   
   get_frontend_url
   get_backend_url
   get_admin_frontend_url
+  get_deploy_pass
+  get_redis_pass
+  get_db_name
+  get_db_user
+  get_db_pass
 }
 
 software_update() {

@@ -57,6 +57,7 @@ backend_fix_login
 backend_postgres_create
 backend_redis_create
 backend_rabbitmq_create
+backend_portainer_create
 backend_node_dependencies
 backend_node_build
 backend_db_migrate
