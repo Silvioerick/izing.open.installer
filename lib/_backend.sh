@@ -214,6 +214,86 @@ EOF
   sleep 2
 }
 
+
+#######################################
+# sets environment variable for backend Localhost
+# Arguments: 
+#   None
+#######################################
+
+
+backend_set_env_local() {
+  print_banner
+  printf "${WHITE} 💻 Configurando variáveis de ambiente (backend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  # ensure idempotency
+  backend_url=$(echo "${backend_url/http:\/\/}")
+  backend_url=${backend_url%%/*}
+  backend_url=http://$backend_url
+
+  # ensure idempotency
+  frontend_url=$(echo "${frontend_url/http:\/\/}")
+  frontend_url=${frontend_url%%/*}
+  frontend_url=http://$frontend_url
+
+  admin_frontend=$(echo "${admin_frontend_url/http:\/\/}")
+
+sudo su - deploy << EOF
+  cat <<[-]EOF > /home/deploy/izing.io/backend/.env
+NODE_ENV=dev
+BACKEND_URL=${backend_url}
+FRONTEND_URL=${frontend_url}
+PROXY_PORT=443
+PORT=3000
+
+DB_DIALECT=postgres
+DB_PORT=5432
+POSTGRES_HOST=localhost
+POSTGRES_USER=${db_user}
+POSTGRES_PASSWORD=${db_pass}
+POSTGRES_DB=${db_name}
+
+JWT_SECRET=DPHmNRZWZ4isLF9vXkMv1QabvpcA80Rc
+JWT_REFRESH_SECRET=EMPehEbrAdi7s8fGSeYzqGQbV5wrjH4i
+
+IO_REDIS_SERVER=localhost
+IO_REDIS_PASSWORD='${redis_pass}'
+IO_REDIS_PORT='6379'
+IO_REDIS_DB_SESSION='2'
+
+CHROME_BIN=/usr/bin/google-chrome-stable
+
+MIN_SLEEP_BUSINESS_HOURS=10000
+MAX_SLEEP_BUSINESS_HOURS=20000
+
+MIN_SLEEP_AUTO_REPLY=4000
+MAX_SLEEP_AUTO_REPLY=6000
+
+MIN_SLEEP_INTERVAL=2000
+MAX_SLEEP_INTERVAL=5000
+
+AMQP_URL='amqp://guest:guest@127.0.0.1:5672?connection_attempts=5&retry_delay=5'
+
+API_URL_360=https://waba-sandbox.360dialog.io
+
+ADMIN_DOMAIN=${admin_frontend}
+
+FACEBOOK_APP_ID='seu ID'
+FACEBOOK_APP_SECRET_KEY='Sua Secret Key'
+
+[-]EOF
+EOF
+
+
+  sleep 2
+}
+
+
+
+
 #######################################
 # sets environment variable for backend AMR64
 # Arguments:
@@ -460,6 +540,50 @@ EOF
 
   sleep 2
 }
+
+
+#######################################
+# updates frontend code
+# Arguments:
+#   None
+#######################################
+backend_nginx_setup_local() {
+  print_banner
+  printf "${WHITE} 💻 Configurando nginx (backend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  backend_hostname=$(echo "${backend_url/http:\/\/}")
+
+sudo su - root << EOF
+
+cat > /etc/nginx/sites-available/izing.io-backend << 'END'
+server {
+  server_name $backend_hostname;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_cache_bypass \$http_upgrade;
+  }
+}
+END
+
+ln -s /etc/nginx/sites-available/izing.io-backend /etc/nginx/sites-enabled
+EOF
+
+  sleep 2
+}
+
+
+
 
 backend_fix_login() {
   print_banner

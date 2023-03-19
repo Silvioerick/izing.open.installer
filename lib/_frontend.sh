@@ -160,6 +160,35 @@ EOF
 
 
 #######################################
+# sets frontend environment variables
+# Arguments:
+#   None
+#######################################
+frontend_set_env_local() {
+  print_banner
+  printf "${WHITE} 💻 Configurando variáveis de ambiente (frontend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  # ensure idempotency
+  backend_url=$(echo "${backend_url/https:\/\/}")
+  backend_url=${backend_url%%/*}
+  backend_url=http://$backend_url
+
+sudo su - deploy << EOF
+  cat <<[-]EOF > /home/deploy/izing.io/frontend/.env
+URL_API=${backend_url}
+FACEBOOK_APP_ID='seu ID facebook'
+[-]EOF
+EOF
+
+  sleep 2
+}
+
+
+
+#######################################
 # starts frontend using pm2 in
 # production mode.
 # Arguments:
@@ -227,3 +256,46 @@ EOF
 
   sleep 2
 }
+
+#######################################
+# sets up nginx for frontend
+# Arguments:
+#   None
+#######################################
+frontend_nginx_setup_local() {
+  print_banner
+  printf "${WHITE} 💻 Configurando nginx (frontend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  frontend_hostname=$(echo "${frontend_url/http:\/\/}")
+  uri=$uri
+sudo su - root << EOF
+
+cat > /etc/nginx/sites-available/izing.io-frontend << 'END'
+server {
+  server_name $frontend_hostname;
+
+    location / {
+    proxy_pass http://127.0.0.1:3333;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_cache_bypass \$http_upgrade;
+  }
+}
+
+
+END
+
+ln -s /etc/nginx/sites-available/izing.io-frontend /etc/nginx/sites-enabled
+EOF
+
+  sleep 2
+}
+

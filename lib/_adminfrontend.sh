@@ -137,6 +137,36 @@ EOF
   sleep 2
 }
 
+
+#######################################
+# sets admin frontend environment variables
+# Arguments:
+#   None
+#######################################
+admin-frontend_set_env_local() {
+  print_banner
+  printf "${WHITE} 💻 Configurando variáveis de ambiente (Admin frontend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  # ensure idempotency
+  backend_url=$(echo "${backend_url/http:\/\/}")
+  #backend_url=${backend_url%%/*}
+  #backend_url=http://$backend_url
+
+sudo su - deploy << EOF
+  cat <<[-]EOF > /home/deploy/izing.io/admin-frontend/.env
+URL_API=${backend_url}
+URL_API2=${backend_url}
+[-]EOF
+EOF
+
+  sleep 2
+}
+
+
+
 #######################################
 # starts frontend using pm2 in
 # production mode.
@@ -204,6 +234,49 @@ EOF
 
   sleep 2
 }
+
+#######################################
+# sets up nginx for admin frontend
+# Arguments:
+#   None
+#######################################
+admin-frontend_nginx_setup_local() {
+  print_banner
+  printf "${WHITE} 💻 Configurando nginx (Admin frontend)...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  admin_frontend_hostname=$(echo "${admin_frontend_url/http:\/\/}")
+  uri=$uri
+sudo su - root << EOF
+
+cat > /etc/nginx/sites-available/izing.io-admin-frontend << 'END'
+server {
+  server_name $admin_frontend_hostname;
+
+    location / {
+    proxy_pass http://127.0.0.1:3334;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_cache_bypass \$http_upgrade;
+  }
+}
+
+
+END
+
+ln -s /etc/nginx/sites-available/izing.io-admin-frontend /etc/nginx/sites-enabled
+EOF
+
+  sleep 2
+}
+
 
 #######################################
 # sets up quasara conf for admin frontend
