@@ -27,6 +27,10 @@ sudo ./izingopenx86
 or to arm
 sudo ./izingopenarm
 ```
+```bash
+username and password to use
+DEMO / DEMO
+```
 
 For Izing Installer Premium contact me.
 
