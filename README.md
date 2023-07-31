@@ -19,6 +19,8 @@ After downloading and making it executable, you need to **navigate into** the in
 ```bash
 cd ./izing.io.installer-master
 chmod +x * 
+sudo apt-get install jq
+
 ```
 
 ```bash
