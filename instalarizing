@@ -1,0 +1,23 @@
+#!/bin/bash
+
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install jq -y
+chmod +x izingopenarm
+chmod +x izingopenx86
+
+ARCH=$(uname -m)
+
+if [[ "$ARCH" == "x86_64" ]]; then
+    echo "Arquitetura x86_64 detectada"
+    sleep 2
+    ./izingopenx86
+elif [[ "$ARCH" == "aarch64" ]]; then
+    echo "Arquitetura ARM detectada"
+    sleep 2
+    # Execute seu programa aqui para arquitetura AMD
+    ./izingopenarm
+else
+    echo "Arquitetura desconhecida: $ARCH"
+fi
+

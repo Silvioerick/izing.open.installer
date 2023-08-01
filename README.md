@@ -8,27 +8,18 @@ Firstly, you need to download it:
 ```bash
 sudo apt -y update && apt -y upgrade
 sudo apt install -y git
-git clone https://github.com/Silvioerick/izing.io.installer-master.git
+git clone https://github.com/Silvioerick/izing.open.installer
 ```
-
 
 ### usage
 
 After downloading and making it executable, you need to **navigate into** the installer directory and **run the script with sudo**:
 
 ```bash
-cd ./izing.io.installer-master
-chmod +x * 
-sudo apt-get install jq
-
+cd izing.open.installer
+bash instalarizing
 ```
 
-```bash
-to x86/amd
-sudo ./izingopenx86
-or to arm
-sudo ./izingopenarm
-```
 ```bash
 username and password to use
 DEMO / DEMO
